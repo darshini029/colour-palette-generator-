@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Pastel Palette Studio - an artistic pastel colour palette generator">
+<title>Pastel Palette Studio</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo"></div>
+    <div><h1>Pastel Palette Studio</h1><div class="subtitle">A little colour playground for creative minds</div></div>
+  </div>
+  <div class="header-note">✦ Pick • Play • Create</div>
+</header>
+<main>
+<section class="hero">
+  <h2>Find colours that feel right.</h2>
+  <p>Generate soft, cheerful palettes for illustrations, comics, crafts, branding, interiors and anything else your imagination wants to make.</p>
+</section>
+<section class="studio">
+  <div class="toolbar">
+    <button class="primary" id="generate">✦ Generate palette</button>
+    <button class="random" id="random">↻ Surprise me</button>
+    <label class="count-label" for="mood">Mood</label>
+    <select id="mood">
+      <option value="dreamy">Dreamy</option><option value="sunny">Sunny</option>
+      <option value="garden">Garden</option><option value="candy">Candy</option>
+      <option value="ocean">Ocean</option><option value="earthy">Earthy</option>
+    </select>
+    <div class="spacer"></div><button id="download">⇩ Download HTML</button>
+  </div>
+  <div class="swatches" id="swatches"></div>
+  <div class="bottom">
+    <div class="panel"><h3>Your palette at a glance</h3><p>Click any colour to copy its HEX code. The palette updates whenever you generate a new set.</p><div class="mini-palette" id="mini"></div></div>
+    <div class="panel"><h3>Little artist tips</h3><div class="tips"><div class="tip">♡ Start with one hero colour</div><div class="tip">✦ Use 1–2 accents</div><div class="tip">☼ Keep soft neutrals nearby</div></div></div>
+  </div>
+</section>
+<footer>Made for artists who like their colours soft, playful & a little magical.</footer>
+</main>
+<div class="toast" id="toast">Copied!</div>
+<script src="script.js"></script>
+</body>
+</html>

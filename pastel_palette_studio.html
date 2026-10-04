@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pastel Palette Studio</title>
+<style>
+  :root{
+    --ink:#403b4a; --muted:#746d7d; --paper:#fffaf7; --card:#ffffffcc;
+    --line:#eadfe3; --accent:#b78ac8;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; min-height:100vh; color:var(--ink);
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    background:
+      radial-gradient(circle at 8% 10%, #d9eff2 0 10%, transparent 28%),
+      radial-gradient(circle at 92% 12%, #e2d8f2 0 9%, transparent 25%),
+      radial-gradient(circle at 85% 88%, #dcebd4 0 10%, transparent 26%),
+      radial-gradient(circle at 12% 85%, #f8e8bf 0 8%, transparent 24%),
+      #fbfaf5;
+    overflow-x:hidden;
+  }
+  body:before, body:after{
+    content:""; position:fixed; z-index:-1; border-radius:50%;
+    filter:blur(2px); opacity:.55; pointer-events:none;
+  }
+  body:before{width:170px;height:170px;left:-70px;top:42%;background:#d8e7f1}
+  body:after{width:210px;height:210px;right:-90px;top:45%;background:#dcebd5}
+  header{
+    max-width:1180px; margin:auto; padding:34px 24px 18px;
+    display:flex; align-items:center; justify-content:space-between; gap:20px;
+  }
+  .brand{display:flex;align-items:center;gap:13px}
+  .logo{
+    width:48px;height:48px;border-radius:15px; position:relative;
+    background:conic-gradient(#ffb8c8,#ffd99b,#bfe6c2,#b9dcff,#d9c0ef,#ffb8c8);
+    box-shadow:0 7px 20px #8f72851f;
+  }
+  .logo:after{content:"";position:absolute;inset:10px;background:#fffaf7;border-radius:50%}
+  h1{font-family:Georgia,serif;margin:0;font-size:28px;font-weight:700}
+  .subtitle{margin:3px 0 0;color:var(--muted);font-size:13px}
+  .header-note{
+    color:#8b7180;background:#ffffffa8;border:1px solid #fff;
+    padding:9px 14px;border-radius:999px;font-size:12px;
+    box-shadow:0 5px 20px #765a7020;
+  }
+  main{max-width:1180px;margin:auto;padding:10px 24px 50px}
+  .hero{text-align:center;margin:15px auto 26px;max-width:760px}
+  .hero h2{font-family:Georgia,serif;font-size:38px;margin:0 0 8px}
+  .hero p{margin:0;color:var(--muted);line-height:1.6}
+  .studio{
+    background:var(--card); border:1px solid #ffffff; border-radius:30px;
+    padding:22px; box-shadow:0 18px 55px #66506418; backdrop-filter:blur(12px);
+  }
+  .toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:18px}
+  button, select, input{
+    font:inherit
+  }
+  button, select{
+    border:1px solid var(--line); background:#fff; color:var(--ink);
+    border-radius:13px; padding:11px 15px; cursor:pointer;
+    transition:.2s ease; box-shadow:0 3px 10px #6b506015;
+  }
+  button:hover, select:hover{transform:translateY(-1px);box-shadow:0 6px 15px #6b506025}
+  .primary{background:#5d5268;color:#fff;border-color:#5d5268}
+  .random{background:#f5e4ef}
+  .toolbar .spacer{flex:1}
+  .count-label{font-size:12px;color:var(--muted);margin-right:-3px}
+  .swatches{
+    display:grid; grid-template-columns:repeat(5,1fr); gap:10px;
+    min-height:310px;
+  }
+  .swatch{
+    min-height:310px;border-radius:20px;overflow:hidden;position:relative;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    cursor:pointer;box-shadow:inset 0 0 0 1px #ffffff45;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .swatch:hover{transform:translateY(-5px) rotate(-.4deg);box-shadow:0 12px 25px #56485b25}
+  .swatch-art{
+    position:absolute;inset:0;overflow:hidden;opacity:.28;pointer-events:none
+  }
+  .blob{position:absolute;border-radius:50%;background:#fff;width:110px;height:70px;filter:blur(1px);transform:rotate(-25deg)}
+  .blob.one{top:18%;left:-30px}.blob.two{top:42%;right:-40px;width:120px;height:90px}.blob.three{top:5%;right:18px;width:55px;height:55px}
+  .swatch-info{
+    position:relative;background:#ffffffd9;padding:14px 13px 13px;
+    backdrop-filter:blur(8px);margin:10px;border-radius:15px;
+  }
+  .swatch-name{font-family:Georgia,serif;font-size:16px;margin-bottom:5px}
+  .hex{font-size:12px;letter-spacing:1px;font-weight:700}
+  .copy-hint{font-size:10px;color:#756d77;margin-top:5px}
+  .bottom{
+    display:grid;grid-template-columns:1.2fr .8fr;gap:14px;margin-top:16px
+  }
+  .panel{
+    border:1px solid var(--line);border-radius:19px;background:#fffaf8b8;padding:17px
+  }
+  .panel h3{font-family:Georgia,serif;margin:0 0 8px;font-size:17px}
+  .panel p{font-size:12px;color:var(--muted);margin:0 0 12px;line-height:1.5}
+  .mini-palette{display:flex;gap:7px}
+  .mini{height:42px;flex:1;border-radius:10px;border:1px solid #fff;cursor:pointer}
+  .tips{display:flex;gap:8px;flex-wrap:wrap}
+  .tip{font-size:11px;background:#fff;border:1px solid var(--line);padding:8px 10px;border-radius:10px}
+  footer{text-align:center;color:#918692;font-size:11px;margin-top:22px}
+  .toast{
+    position:fixed;left:50%;bottom:25px;transform:translate(-50%,20px);
+    background:#403b4a;color:#fff;padding:11px 16px;border-radius:999px;
+    opacity:0;pointer-events:none;transition:.25s;box-shadow:0 10px 25px #403b4a35;font-size:12px
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  @media(max-width:800px){
+    .swatches{grid-template-columns:repeat(2,1fr)}
+    .swatch{min-height:230px}
+    .bottom{grid-template-columns:1fr}
+    .header-note{display:none}
+    .hero h2{font-size:31px}
+  }
+  @media(max-width:480px){
+    header{padding:25px 15px 10px} main{padding:10px 15px 35px}
+    .studio{padding:14px;border-radius:22px}
+    .swatches{grid-template-columns:1fr}
+    .swatch{min-height:210px}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo"></div>
+    <div>
+      <h1>Pastel Palette Studio</h1>
+      <div class="subtitle">A little colour playground for creative minds</div>
+    </div>
+  </div>
+  <div class="header-note">✦ Pick • Play • Create</div>
+</header>
+
+<main>
+  <section class="hero">
+    <h2>Find colours that feel right.</h2>
+    <p>Generate soft, cheerful palettes for illustrations, comics, crafts, branding, interiors and anything else your imagination wants to make.</p>
+  </section>
+
+  <section class="studio">
+    <div class="toolbar">
+      <button class="primary" id="generate">✦ Generate palette</button>
+      <button class="random" id="random">↻ Surprise me</button>
+      <label class="count-label" for="mood">Mood</label>
+      <select id="mood">
+        <option value="dreamy">Dreamy</option>
+        <option value="sunny">Sunny</option>
+        <option value="garden">Garden</option>
+        <option value="candy">Candy</option>
+        <option value="ocean">Ocean</option>
+        <option value="earthy">Earthy</option>
+      </select>
+      <div class="spacer"></div>
+      <button id="download">⇩ Download HTML</button>
+    </div>
+
+    <div class="swatches" id="swatches"></div>
+
+    <div class="bottom">
+      <div class="panel">
+        <h3>Your palette at a glance</h3>
+        <p>Click any colour to copy its HEX code. The palette below updates whenever you generate a new set.</p>
+        <div class="mini-palette" id="mini"></div>
+      </div>
+      <div class="panel">
+        <h3>Little artist tips</h3>
+        <div class="tips">
+          <div class="tip">♡ Start with one hero colour</div>
+          <div class="tip">✦ Use 1–2 accents</div>
+          <div class="tip">☼ Keep soft neutrals nearby</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Made for artists who like their colours soft, playful & a little magical.</footer>
+</main>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+const palettes = {
+  dreamy: [
+    ["Powder Blue","#C9DFF0"],["Buttercream","#F7E7AE"],["Mint Whisper","#CDE7D2"],
+    ["Lavender Haze","#DCCEEB"],["Soft Coral","#F2C8B8"]
+  ],
+  sunny: [
+    ["Lemon Cream","#F8E7A7"],["Peach Glow","#F6C9AD"],["Pistachio","#DCE8B9"],
+    ["Powder Blue","#C5DDED"],["Warm Cream","#F4E5CF"]
+  ],
+  garden: [
+    ["Sage Leaf","#C8D9C0"],["Pistachio","#DCE8B8"],["Pale Sky","#C7DFEA"],
+    ["Lavender Stem","#D8CBE8"],["Butter Petal","#F3E1AE"]
+  ],
+  candy: [
+    ["Blue Sugar","#C4DDF0"],["Lemon Drop","#F7E5A5"],["Mint Candy","#C9E7D5"],
+    ["Grape Fizz","#D4C1E7"],["Peach Sorbet","#F4C9B5"]
+  ],
+  ocean: [
+    ["Seafoam","#BFE4DB"],["Lagoon Mist","#BBDCE5"],["Pearl Blue","#C9DDF0"],
+    ["Shell Cream","#F2E2CA"],["Soft Coral","#F0C5B7"]
+  ],
+  earthy: [
+    ["Oat Milk","#E9DAC5"],["Sage","#C5D2BB"],["Misty Olive","#D5D9B9"],
+    ["Clay Peach","#DDBEAA"],["Dusty Lavender","#D5C9DC"]
+  ]
+};
+
+let current = palettes.dreamy;
+
+function render(list){
+  current = list;
+  const container = document.getElementById("swatches");
+  container.innerHTML = "";
+  list.forEach((item,i)=>{
+    const card=document.createElement("div");
+    card.className="swatch";
+    card.style.background=item[1];
+    card.innerHTML=`
+      <div class="swatch-art">
+        <span class="blob one"></span><span class="blob two"></span><span class="blob three"></span>
+      </div>
+      <div class="swatch-info">
+        <div class="swatch-name">${item[0]}</div>
+        <div class="hex">${item[1]}</div>
+        <div class="copy-hint">Click to copy</div>
+      </div>`;
+    card.addEventListener("click",()=>copyHex(item[1]));
+    container.appendChild(card);
+  });
+  const mini=document.getElementById("mini");
+  mini.innerHTML="";
+  list.forEach(item=>{
+    const m=document.createElement("div");
+    m.className="mini";m.title=item[1];m.style.background=item[1];
+    m.addEventListener("click",()=>copyHex(item[1]));
+    mini.appendChild(m);
+  });
+}
+
+function randomPastel(){
+  const names=["Petal","Cream","Mist","Blush","Meadow","Sorbet","Sky","Lilac","Pearl","Apricot"];
+  return Array.from({length:5},(_,i)=>{
+    const hue=Math.floor(Math.random()*360);
+    const sat=35+Math.floor(Math.random()*25);
+    const light=78+Math.floor(Math.random()*13);
+    return [names[Math.floor(Math.random()*names.length)]+" "+(i+1), hslToHex(hue,sat,light)];
+  });
+}
+function hslToHex(h,s,l){
+  s/=100;l/=100;
+  const k=n=>(n+h/30)%12;
+  const a=s*Math.min(l,1-l);
+  const f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));
+  return "#"+[f(0),f(8),f(4)].map(x=>Math.round(255*x).toString(16).padStart(2,"0")).join("");
+}
+function copyHex(hex){
+  navigator.clipboard?.writeText(hex);
+  const toast=document.getElementById("toast");
+  toast.textContent=hex+" copied!";
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),1300);
+}
+function generate(){
+  const mood=document.getElementById("mood").value;
+  render([...palettes[mood]]);
+}
+document.getElementById("generate").onclick=generate;
+document.getElementById("mood").onchange=generate;
+document.getElementById("random").onclick=()=>render(randomPastel());
+
+document.getElementById("download").onclick=()=>{
+  const blob=new Blob([document.documentElement.outerHTML],{type:"text/html"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="pastel-palette-studio.html";
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+render(current);
+</script>
+</body>
+</html>
